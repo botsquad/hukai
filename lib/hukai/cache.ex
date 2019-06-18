@@ -6,7 +6,7 @@ defmodule Hukai.Cache do
     GenServer.start_link(__MODULE__, [], name: __MODULE__)
   end
 
-  @kinds ~w(adjective adverb noun verb)a
+  @kinds ~w(adjective adverb noun verb animal color)a
 
   # Server callbacks
   def init(state) do

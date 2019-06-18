@@ -11,6 +11,10 @@ defmodule HukaiTest do
 
     assert "The spatial toxin further gas the pranha." ==
              Hukai.generate("The %a %n %b %v the %n.")
+
+    assert "hamster" == Hukai.generate("%A")
+    assert "violet" == Hukai.generate("%C")
+    assert "amber wolf" == Hukai.generate("%C %A")
   end
 
   test "hash" do

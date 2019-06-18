@@ -24,7 +24,16 @@ defmodule Hukai do
 
   defp generate_token([], _hash, acc), do: acc
 
-  for {char, kind} <- [{"n", :noun}, {"v", :verb}, {"a", :adjective}, {"b", :adverb}] do
+  @all [
+    {"n", :noun},
+    {"v", :verb},
+    {"a", :adjective},
+    {"b", :adverb},
+    {"A", :animal},
+    {"C", :color}
+  ]
+
+  for {char, kind} <- @all do
     defp generate_token([unquote(char) <> item | rest], hash, acc) do
       generate_next([item | rest], hash, [pick(unquote(kind), hash) | acc])
     end
