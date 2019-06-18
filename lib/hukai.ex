@@ -36,7 +36,7 @@ defmodule Hukai do
 
     index =
       case n do
-        nil -> :random.uniform(count) - 1
+        nil -> Enum.random(0..(count - 1))
         _ -> rem(n, count)
       end
 

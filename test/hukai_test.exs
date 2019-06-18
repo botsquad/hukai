@@ -3,11 +3,13 @@ defmodule HukaiTest do
   doctest Hukai
 
   test "greets the world" do
-    assert "happiest petulance" == Hukai.generate()
-    assert "restaurateur" == Hukai.generate("%n")
-    assert "weekend" == Hukai.generate("%n")
+    :rand.seed(:exsplus, {1, 2, 3})
 
-    assert "The jeweled pinochle prophetically streamed the soaking." ==
+    assert "eastern wear" == Hukai.generate()
+    assert "era" == Hukai.generate("%n")
+    assert "target" == Hukai.generate("%n")
+
+    assert "The spatial toxin further gas the pranha." ==
              Hukai.generate("The %a %n %b %v the %n.")
   end
 
