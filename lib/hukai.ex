@@ -16,7 +16,7 @@ defmodule Hukai do
     generate(pattern, hash_value)
   end
 
-  defp generate_next([], hash, acc), do: acc
+  defp generate_next([], _hash, acc), do: acc
 
   defp generate_next([item | rest], hash, acc) do
     generate_token(rest, hash, [item | acc])
@@ -39,7 +39,7 @@ defmodule Hukai do
     end
   end
 
-  defp pick(kind, n \\ nil) do
+  defp pick(kind, n) do
     count = Application.get_env(:hukai, :corpus_counts)[kind]
     table = Hukai.Cache.table_name(kind)
 

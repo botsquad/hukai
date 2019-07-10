@@ -9,7 +9,7 @@ defmodule Hukai.Cache do
   @kinds ~w(adjective adverb noun verb animal color)a
 
   # Server callbacks
-  def init(state) do
+  def init(_state) do
     {:ok, nil, 0}
   end
 
