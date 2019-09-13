@@ -23,6 +23,7 @@ defmodule Hukai.Cache do
         count =
           Application.app_dir(:hukai, "priv/corpus/#{kind}s.txt")
           |> File.read!()
+          |> String.trim()
           |> String.split("\n")
           |> Enum.with_index()
           |> Enum.map(fn {word, index} ->
