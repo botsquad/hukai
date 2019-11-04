@@ -2,19 +2,27 @@ defmodule HukaiTest do
   use ExUnit.Case
   doctest Hukai
 
-  test "greets the world" do
+  test "generating" do
     :rand.seed(:exsplus, {1, 2, 3})
 
-    assert "eastern wear" == Hukai.generate()
-    assert "era" == Hukai.generate("%n")
-    assert "target" == Hukai.generate("%n")
+    assert "usual lesion" == Hukai.generate()
+    assert "fleck" == Hukai.generate("%n")
+    assert "ballet" == Hukai.generate("%n")
 
-    assert "The spatial toxin further gas the pranha." ==
+    assert "The baneful tiller mainly jeers the clean." ==
              Hukai.generate("The %a %n %b %v the %n.")
 
-    assert "hamster" == Hukai.generate("%A")
-    assert "violet" == Hukai.generate("%C")
-    assert "amber wolf" == Hukai.generate("%C %A")
+    assert "rat" == Hukai.generate("%A")
+    assert "crimson" == Hukai.generate("%C")
+    assert "cyan porcupine" == Hukai.generate("%C %A")
+  end
+
+  test "nl locale" do
+    :rand.seed(:exsplus, {1, 2, 3})
+
+    assert "krokodil" == Hukai.generate("%A", "nl")
+    assert "zwarte" == Hukai.generate("%C", "nl")
+    assert "beige vis" == Hukai.generate("%C %A", "nl")
   end
 
   test "hash" do

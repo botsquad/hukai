@@ -1,0 +1,14 @@
+amber
+beige
+zwarte
+blauwe
+bruine
+grijze
+groene
+magenta
+oranje
+roze
+rode
+paarse
+witte
+gele

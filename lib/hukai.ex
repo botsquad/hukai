@@ -3,26 +3,33 @@ defmodule Hukai do
   Pronouncable name generator
   """
 
-  def generate(pattern \\ "%a %n", hash \\ nil) do
+  @default_locale "en"
+  @default_pattern "%a %n"
+
+  def generate(pattern \\ @default_pattern, locale \\ @default_locale) do
+    generate(pattern, locale, nil)
+  end
+
+  defp generate(pattern, locale, hash) do
     pattern
     |> String.split("%")
-    |> generate_next(hash, [])
+    |> generate_next(locale, hash, [])
     |> Enum.reverse()
     |> IO.chardata_to_string()
   end
 
-  def hash(value, pattern \\ "%a %n") do
+  def hash(value, pattern \\ @default_pattern, locale \\ @default_locale) do
     hash_value = :erlang.term_to_binary({pattern, value}) |> XXHash.xxh32()
-    generate(pattern, hash_value)
+    generate(pattern, locale, hash_value)
   end
 
-  defp generate_next([], _hash, acc), do: acc
+  defp generate_next([], _locale, _hash, acc), do: acc
 
-  defp generate_next([item | rest], hash, acc) do
-    generate_token(rest, hash, [item | acc])
+  defp generate_next([item | rest], locale, hash, acc) do
+    generate_token(rest, locale, hash, [item | acc])
   end
 
-  defp generate_token([], _hash, acc), do: acc
+  defp generate_token([], _locale, _hash, acc), do: acc
 
   @all [
     {"n", :noun},
@@ -32,16 +39,23 @@ defmodule Hukai do
     {"A", :animal},
     {"C", :color}
   ]
+  @locales ["en", "nl"]
 
-  for {char, kind} <- @all do
-    defp generate_token([unquote(char) <> item | rest], hash, acc) do
-      generate_next([item | rest], hash, [pick(unquote(kind), hash) | acc])
+  for {char, kind} <- @all, locale <- @locales do
+    defp generate_token([unquote(char) <> item | rest], unquote(locale), hash, acc) do
+      generate_next([item | rest], unquote(locale), hash, [
+        pick(unquote(locale), unquote(kind), hash) | acc
+      ])
     end
   end
 
-  defp pick(kind, n) do
-    count = Application.get_env(:hukai, :corpus_counts)[kind]
-    table = Hukai.Cache.table_name(kind)
+  defp generate_token(_, _, _, _) do
+    raise RuntimeError, "Unsupported locale or token type"
+  end
+
+  defp pick(locale, kind, n) do
+    count = Application.get_env(:hukai, :corpus_counts)[{locale, kind}]
+    table = Hukai.Cache.table_name(locale, kind)
 
     index =
       case n do

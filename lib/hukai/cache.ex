@@ -7,6 +7,7 @@ defmodule Hukai.Cache do
   end
 
   @kinds ~w(adjective adverb noun verb animal color)a
+  @locales ~w(en nl)
 
   # Server callbacks
   def init(_state) do
@@ -16,31 +17,37 @@ defmodule Hukai.Cache do
   def handle_info(:timeout, state) do
     # load the data
     counts =
-      for kind <- @kinds do
-        t = table_name(kind)
+      for kind <- @kinds, locale <- @locales do
+        t = table_name(locale, kind)
         :ets.new(t, [:named_table, :protected])
 
-        count =
-          Application.app_dir(:hukai, "priv/corpus/#{kind}s.txt")
-          |> File.read!()
-          |> String.trim()
-          |> String.split("\n")
-          |> Enum.with_index()
-          |> Enum.map(fn {word, index} ->
-            word = String.trim(word)
-            :ets.insert(t, {index, word})
-          end)
-          |> Enum.count()
+        path = Application.app_dir(:hukai, "priv/corpus/#{locale}_#{kind}.txt")
 
-        {kind, count}
+        with {:ok, contents} <- File.read(path) do
+          count =
+            contents
+            |> String.trim()
+            |> String.split("\n")
+            |> Enum.with_index()
+            |> Enum.map(fn {word, index} ->
+              word = String.trim(word)
+              :ets.insert(t, {index, word})
+            end)
+            |> Enum.count()
+
+          {{locale, kind}, count}
+        else
+          _ -> nil
+        end
       end
+      |> Enum.filter(&(&1 != nil))
 
-    Application.put_env(:hukai, :corpus_counts, counts)
+    Application.put_env(:hukai, :corpus_counts, Map.new(counts))
 
     {:noreply, state}
   end
 
-  def table_name(kind) do
-    :"hukai_#{kind}s"
+  def table_name(locale, kind) do
+    :"hukai_#{locale}_#{kind}s"
   end
 end
