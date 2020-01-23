@@ -66,4 +66,19 @@ defmodule Hukai do
     [{_, word}] = :ets.lookup(table, index)
     word
   end
+
+  def translate(sentence, from, to) do
+    sentence
+    |> String.trim()
+    |> String.split(" ")
+    |> Enum.map(fn token ->
+      table = Hukai.Cache.translation_table_name(from, to)
+
+      case :ets.lookup(table, token) do
+        [{^token, translated}] -> translated
+        _ -> token
+      end
+    end)
+    |> Enum.join(" ")
+  end
 end
