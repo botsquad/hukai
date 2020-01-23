@@ -1,7 +1,6 @@
 ant
 antelope
 ape
-ass
 badger
 bat
 bear
@@ -30,6 +29,7 @@ fish
 fox
 frog
 goat
+gorilla
 hamster
 hare
 horse

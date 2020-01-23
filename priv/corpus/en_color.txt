@@ -1,10 +1,7 @@
-amber
 beige
 black
 blue
 brown
-crimson
-cyan
 gray
 green
 indigo
