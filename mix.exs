@@ -6,9 +6,27 @@ defmodule Hukai.MixProject do
       app: :hukai,
       version: File.read!("VERSION"),
       elixir: "~> 1.8",
+      description: description(),
+      package: package(),
+      source_url: "https://github.com/botsquad/hukai",
+      homepage_url: "https://github.com/botsquad/hukai",
+      build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
       deps: deps()
     ]
+  end
+
+  defp description do
+    "Generate Heroku-like pronouncable strings in Elixir"
+  end
+
+  defp package do
+    %{
+      files: ["lib", "mix.exs", "*.md", "LICENSE", "VERSION"],
+      maintainers: ["Arjan Scherpenisse"],
+      licenses: ["MIT"],
+      links: %{"GitHub" => "https://github.com/botsquad/hukai"}
+    }
   end
 
   # Run "mix help compile.app" to learn about applications.
