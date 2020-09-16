@@ -22,7 +22,7 @@ defmodule Hukai.MixProject do
 
   defp package do
     %{
-      files: ["lib", "mix.exs", "*.md", "LICENSE", "VERSION"],
+      files: ["lib", "priv", "mix.exs", "*.md", "LICENSE", "VERSION"],
       maintainers: ["Arjan Scherpenisse"],
       licenses: ["MIT"],
       links: %{"GitHub" => "https://github.com/botsquad/hukai"}
